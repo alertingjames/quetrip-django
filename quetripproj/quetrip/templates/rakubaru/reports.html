@@ -1,0 +1,350 @@
+{% extends 'rakubaru/base_report.html' %}
+{% block title %}{% if member %}{{member.name}}{% else %}らくばる{% endif %} レポート{% endblock %}
+{% block body %}
+<br>
+<br>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<meta charset="utf-8">
+<meta content="stuff, to, help, search, engines, not" name="keywords">
+<meta content="What this page is about." name="description">
+<style>
+
+html, body{
+  background: #BDB76B no-repeat center center fixed;
+  background-size:cover;
+}
+
+#myBtn {
+  display: none;
+  position: fixed;
+  bottom: 20%;
+  right: 15px;
+  z-index: 99;
+  border: none;
+  outline: none;
+  background-color: rgba(0,0,0,0.3);
+  color: white;
+  cursor: pointer;
+  padding: 15px;
+  border-radius: 50%;
+}
+
+#myBtn:hover {
+  background-color: orange;
+}
+
+#admin{
+    display:none;
+}
+
+.action-menu {
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    padding-left:20%;
+    padding-right:20%;
+    border-radius: 5px;
+    background-color:rgba(255, 255, 204, 0.6);
+    /*padding:20px;*/
+    text-align:center;
+    display:none;
+}
+
+form h1 {
+  font-size: 21px;
+  background: #327a81 none repeat scroll 0% 0%;
+  color: rgb(255, 255, 255);
+  padding: 19px 22px;
+  border-radius: 5px 5px 0px 0px;
+  margin: auto;
+  text-shadow: none;
+  text-align:left
+}
+
+.report-form {
+  max-width:600px;
+  width:auto;
+  margin:auto;
+  border-radius:5px;
+  margin-bottom:3px;
+  background:white;
+  background-size:cover;
+  overflow: hidden;
+}
+
+.report-form:hover {
+  background:#ffffcc;
+  background-size:cover;
+}
+
+.report-form:hover .action-menu{
+    display:block;
+}
+
+p span {
+  color: #F00;
+}
+
+p {
+  margin: 0px;
+  font-weight: 200;
+  line-height: 2;
+  color:#fff;
+}
+
+a {
+  text-decoration:inherit
+}
+
+.form-group {
+  overflow: hidden;
+  width:100%;
+}
+
+.contentform {
+  padding: 10px 10px;
+}
+
+.bouton-update{
+  background-color: #008CBA;
+  color: #FFF;
+  text-align: center;
+  width: 100%;
+  border:0;
+  padding: 12px 18px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#search::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: white;
+  opacity: 0.7; /* Firefox */
+}
+
+#search:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: white;
+  opacity: 0.7;
+}
+
+#search::-ms-input-placeholder { /* Microsoft Edge */
+  color: white;
+  opacity: 0.7;
+}
+
+</style>
+
+<script>
+	history.pushState(null, null, location.href);
+    history.back();
+    history.forward();
+    window.onpopstate = function () { history.go(1); };
+</script>
+
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../lib/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<div id="title" style="font-size:25px; font-weight:800; color: #F7D479; text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.7); text-align:center;
+	position:fixed; left:50%; float:middle; transform:translate(-50%, -50%); width:350px; z-index:100; top:92px; display:none;">
+    {% if member %}{{member.name}}{% else %}らくばる{% endif %} レポート
+</div>
+
+{% if reports %}
+<div style="width:100%; height:auto;">
+    <div style="font-size:25px; font-weight:800;
+        color: #F7D479; text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.7); text-align:center; width:100%; margin-top:40px;">{% if member %}{{member.name}}{% else %}らくばる{% endif %} レポート<br>
+    </div>
+    <br>
+    <div style="width:100%; text-align:center; display:inline-block;">
+        <div style="width:400px; display:inline-block;">
+            <div style="width:100%;">
+                <i class="fa fa-search" style="font-size:20px; float:left; color:white; margin-top:3px;"></i>
+                <input type="text" placeholder="探す..." autocomplete="off" style="float:left; margin-left:10px; width:90%; background:transparent; border:0; padding:3px 6px; font-size:20px;
+                    color:white; height:auto;" id="search" onkeyup="filter()" onchange="clear()">
+            </div><br>
+            <div style="background:white; width:400px; height:2px; margin-top:10px;"></div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div id="list">
+        {% for report in reports %}
+        <div class="report-form" style="position:relative;">
+            <div class="contentform">
+                <div style="width:100%; display:flex;" >
+                    <div style="padding:10px; float:left; position:relative;">
+                        <a href="#">
+                            <img src="{% if report.member.picture_url %}{{report.member.picture_url}}{% else %}/static/images/rakubaru/profile.png{% endif %}"
+                                style="width:60px; height:60px; border-radius:50%; object-fit:cover;">
+                        </a>
+                    </div>
+                    <a href="#" style="flex-grow:1;">
+                        <div style="padding-left:8px; float:left; margin-top:5px;">
+                            <div style="color:black; font-size:20px; font-weight:600; text-align:left; word-wrap: break-word;">{{report.route.name}}</div>
+                            <div style="font-size:16px; margin-top:5px;">
+                                <i class="fa fa-clock-o" style="color:orange; font-size:25px; margin-right:5px; vertical-align:middle;"></i>
+                                {{report.route.start_time}} ~ {{report.route.start_time}}
+                            </div>
+                            <div style="font-size:16px; margin-left:20px; color:orange;">{{report.route.duration}}</div>
+                        </div>
+                    </a>
+                    <div style="float:right; margin:5px;">
+                        <div style="font-size:16px;"><i class="fa fa-tachometer" style="color:orange; font-size:22px; margin-right:10px;"></i>{{report.route.speed}}mps</div>
+                        <div style="font-size:16px;"><i class="fas fa-route" style="color:orange; font-size:22px; margin-right:10px;"></i>{{report.route.distance}}km</div>
+                    </div>
+                </div>
+                <div style="color:gray; float:right; font-size:12px; margin-right:5px; margin-bottom:6px;">{{report.route.reported_time}}</div>
+            </div>
+
+            <input hidden id="rtname" value="{{report.route.name}}">
+            <input hidden id="rtstartend" value="{{report.route.start_time}} ~ {{report.route.start_time}}">
+            <input hidden id="rtduration" value="{{report.route.duration}}">
+            <input hidden id="rtspeed" value="{{report.route.speed}}">
+            <input hidden id="rtdistance" value="{{report.route.distance}}">
+
+            <div class="action-menu">
+                <div class="form-group" style="margin-top:8px;">
+                    <label style="color:#008CBA; font-size:14px; font-weight:600; padding:3px 8px 3px 8px; background-color:white;">{{report.member.name}}</label>
+                </div>
+                <div class="form-group" style="display:flex;">
+                    <div style="flex-grow:1;">
+                        <button class="bouton-update" style="width:60px; height:60px; text-align:center;"
+                            onclick="javascript:window.location.href='/rakubaru/raopenroutemap?route_id={{report.route.pk}}';">
+                            <i class="fas fa-route" style="color:white; font-size:25px;"></i>
+                        </button>
+                    </div>
+
+                    <div style="flex-grow:1;">
+                        <button class="bouton-update" style="width:60px; height:60px; text-align:center;"
+                            onclick="javascript: if(confirm('このレポートを削除してもよろしいですか？')) {
+                                {% if member %} window.location.href='/rakubaru/radelroute?option=user&route_id={{report.route.pk}}&member_id={{member.pk}}';
+                                {% else %} window.location.href='/rakubaru/radelroute?option=all&route_id={{report.route.pk}}';
+                                {% endif %}
+                            }">
+                            <i class="fa fa-trash" style="color:white; font-size:25px;"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    var list = document.getElementById("list");
+    var lis = list.querySelectorAll( "#list > div" );
+    var prods = [];
+    var prods2 = [];
+    for(var i=0; i<lis.length; i++){
+       prods.push(lis[i]);
+       prods2.push(lis[i]);
+    }
+    function filter(){
+        var keyword = document.getElementById("search").value;
+        if(keyword.length > 0){
+            list.innerHTML = "";
+            for(var i=0; i<prods.length; i++){
+                var rtname = prods[i].querySelector("input[id='rtname']");
+                if(rtname.value.toLowerCase().includes(keyword.toLowerCase())){
+                    list.appendChild(prods[i]);
+                }
+                else {
+                    var rtstartend = prods[i].querySelector("input[id='rtstartend']");
+                    if(rtstartend.value.toLowerCase().includes(keyword.toLowerCase())){
+                        list.appendChild(prods[i]);
+                    }else {
+                        var rtdistance = prods[i].querySelector("input[id='rtdistance']");
+                        if(rtdistance.value.toLowerCase().includes(keyword.toLowerCase())){
+                            list.appendChild(prods[i]);
+                        }else {
+                            var rtspeed = prods[i].querySelector("input[id='rtspeed']");
+                            if(rtspeed.value.toLowerCase().includes(keyword.toLowerCase())){
+                                list.appendChild(prods[i]);
+                            }else {
+                                var rtduration = prods[i].querySelector("input[id='rtduration']");
+                                if(rtduration.value.toLowerCase().includes(keyword.toLowerCase())){
+                                    list.appendChild(prods[i]);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }else{
+            list.innerHTML = "";
+            for(var i=0; i<prods2.length; i++){
+                list.appendChild(prods2[i]);
+            }
+        }
+    }
+
+    function clear(){
+        var keyword = document.getElementById("search").value;
+        if(keyword.length == 0){
+            // alert('clear?');
+            list.innerHTML = "";
+            for(var i=0; i<prods2.length; i++){
+                list.appendChild(prods2[i]);
+            }
+        }
+    }
+</script>
+
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+<button onclick="topFunction()" id="myBtn" title="Go to top"><i class="glyphicon glyphicon-menu-up" style="color:white; font-size:14px;"></i></button>
+
+<script>
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        document.getElementById("myBtn").style.display = "block";
+        document.getElementById("title").style.display = "block";
+    } else {
+        document.getElementById("myBtn").style.display = "none";
+        document.getElementById("title").style.display = "none";
+    }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
+</script>
+
+{%else %}
+        <center>
+            <h3 class="my_items col-sm-offset-1" style="color:white; margin-top:150px;">レポートは存在しません</h3></center>
+
+{% endif %}
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

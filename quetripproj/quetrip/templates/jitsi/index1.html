@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src='https://meet.jit.si/external_api.js'></script>
+</head>
+<body>
+    <div id="meet"></div>
+    <script>
+        const domain = 'meet.jit.si';
+        var height = 900;
+        const options = {
+            roomName: 'Test Live Meeting',
+            // width: 700,
+            height: height,
+            parentNode: document.querySelector('#meet'),
+            // userInfo: {
+            //     participantId: '111111',
+            //     email: 'email@jitsiexamplemail.com',
+            //     displayName: 'John Doe'
+            // }
+        };
+        const api = new JitsiMeetExternalAPI(domain, options);
+        // api.executeCommand('avatarUrl', 'https://avatars0.githubusercontent.com/u/3671647');
+        // api.executeCommand('setVideoQuality', 1024);
+        // api.executeCommand('setLargeVideoParticipant', '111111');
+    </script>
+</body>
+</html>
